@@ -54,8 +54,6 @@ setCurrencyType(aType){
   }
 
 
-
-
 toString(){
     return this.#type
 }
