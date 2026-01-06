@@ -144,7 +144,7 @@ noVAT("one kingdom","normal" );
 printOut(newLine);
 
 printOut("--- Part 7 ----------------------------------------------------------------------------------------------");
-// paramertres has to be inputed in right order, and the one is needed to be calculated has to be replaced with  text format
+
 
 function moveCalc (aSpeed, aDistance, aTime){
     const S = Number(aSpeed);
