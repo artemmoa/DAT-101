@@ -146,14 +146,47 @@ let txtMovieTitle = document.getElementById("txtMovieTitle");
 let txtMovieDirector = document.getElementById("txtMovieDirector");
 let txtMovieRate = document.getElementById("txtMovieRate");
 let cmbAddMovie = document.getElementById("cmbAddMovie"); 
-let moiveData = [];
-
-for (let genre of MovieGenre){
+class Movie {
+  constructor(nr, title, genre, director, rate) {
+    this.nr = nr;
+    this.title = title;
+    this.genre = genre;
+    this.director = director;
+    this.rate = rate;
+  }
+}
+for (let genreIn of MovieGenre){
   let optionGenre = document.createElement("option");
-  optionGenre.value =genre; 
-  optionGenre.textContent = genre;    
+  optionGenre.value = genreIn; 
+  optionGenre.textContent = genreIn;    
   selectMovieGenre.append(optionGenre)
 };
+
+let movieCounter = 1;
+cmbAddMovie.addEventListener("click", function(event){
+let titleIn = txtMovieTitle.value; 
+let directorIn = txtMovieDirector.value;
+let rateIn = txtMovieRate.value; 
+let genreIn = selectMovieGenre.value;
+  const newMovie = document.createElement("tr");
+  const numberOut = document.createElement("td");
+  numberOut.textContent = movieCounter;
+  const titleOut = document.createElement("td");
+  titleOut.textContent = titleIn;
+  const genreOut = document.createElement("td");
+  genreOut.textContent = genreIn;
+  
+  const dirtectorOut = document.createElement("td");
+  dirtectorOut.textContent = directorIn;
+ 
+  const rateOut = document.createElement("td");
+  rateOut.textContent=rateIn;
+
+  newMovie.append(numberOut,titleOut, genreOut, dirtectorOut, rateOut);
+  tblMovies.append(newMovie);
+  movieCounter++;
+})
+
 
 
 
