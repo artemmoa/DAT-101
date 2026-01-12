@@ -1,6 +1,9 @@
 "use strict";
 // Import necessary modules
 import { TSpriteCanvas } from "libSprite";
+import { TBackground } from "./background.js";
+import { THero } from "./hero.js";
+
 
 //--------------- Objects and Variables ----------------------------------//
 const chkMuteSound = document.getElementById("chkMuteSound");
@@ -27,10 +30,18 @@ const SpriteInfoList = {
 };
 
 const EGameStatus = { idle: 0 };
-
+const background = new TBackground(spcvs, SpriteInfoList);
+const hero = new THero(spcvs, SpriteInfoList.hero1);
 
 //--------------- Functions ----------------------------------------------//
+function animateGame(){
+  hero.animate();
+}
 
+function drawGame(){
+ background.draw();
+ hero.draw();
+}
 function loadGame() {
   console.log("Game Loaded");
   // Set canvas size to background size
@@ -38,6 +49,9 @@ function loadGame() {
   cvs.height = SpriteInfoList.background.height; 
 
   // Overload the spcvs draw function here!
+  spcvs.onDraw = drawGame;
+  // Start animate engine
+  setInterval(animateGame, 10);        
 
 } // end of loadGame
 
@@ -46,6 +60,7 @@ function onKeyDown(aEvent) {
   switch (aEvent.code) {
     case "Space":
       console.log("Space key pressed, flap the hero!");
+      hero.flap();
       break;
   }
 } // end of onKeyDown
