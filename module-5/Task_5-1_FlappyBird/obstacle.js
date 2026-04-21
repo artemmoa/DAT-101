@@ -12,7 +12,7 @@ export class TObstacle{
   #spUp;
   #spDown;
   #spi;
-  constructor(aSpcvs, aSPI){
+  constructor(aSpcvs, aSPI, isDay){
     const x = 600;
     this.#spi = aSPI;
     // Generate random gap height, based on difficulty settings
@@ -31,9 +31,14 @@ export class TObstacle{
     }
 
     this.#spDown = new TSprite(aSpcvs, aSPI, x, topWithGap);
-    this.#spDown.index = 2;
+    this.#spDown.index = 0;
     this.#spUp = new TSprite(aSpcvs, aSPI, x, top);
-    this.#spUp.index = 3;
+    this.#spUp.index = 1;
+    if(isDay){
+      this.#spUp.index = 3;
+      this.#spDown.index = 2;
+    }
+
   }
 
   Properties
@@ -49,6 +54,15 @@ export class TObstacle{
     this.#spUp.draw();
   }
 
+  setDay(){
+    this.#spDown.index = 2;
+    this.#spUp.index = 3;
+  }
+  setNight(){
+    this.#spDown.index = 0;
+   this.#spUp.index = 1;
+  }
+
   
   animate(){
     this.#spDown.x--;
@@ -59,7 +73,6 @@ export class TObstacle{
       EGameStatus.state = EGameStatus.heroIsDead;
       hero.animationSpeed = 0;
       menu.stopSound();
-      hero.stopSound();
       hero.flap();
       hero.dead();
     }

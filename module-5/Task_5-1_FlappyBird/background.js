@@ -14,7 +14,14 @@ export class TBackground{
   drawBackground(){
     this.#spriteBackground.draw();
   }
-
+// night mode
+  setNight(){
+    this.#spriteBackground.index = 1;
+  }
+  setDay(){
+    this.#spriteBackground.index = 0;
+  }
+  //end night mode
   drawGround(){
     this.#spriteGround.draw();
   }
