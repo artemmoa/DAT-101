@@ -4,6 +4,9 @@
  import {EGameStatus, GameProps, SheetData, newGame, loadGame} from "./game.mjs"
 import { TSpriteNumber, TSpriteButtonHaptic, TSprite, TSpriteButton} from "libSprite";
 
+import { TSoundEffects } from "./sound.js";   
+
+
 export class TMenuSnake {
 #scoreSprite;
 #displayScore = 0;
@@ -13,6 +16,7 @@ export class TMenuSnake {
 #gameOverScore;
 #retryBtn;
 #homeBtn;
+#soundEffects;
 
 constructor(aSpcvs, aSPI){
     this.#scoreSprite = new TSpriteNumber(aSpcvs, aSPI.Number, 20, 20, 0, 0); // create a sprite for score 
@@ -35,6 +39,8 @@ constructor(aSpcvs, aSPI){
     this.homeBtn = new  TSpriteButton(aSpcvs, aSPI.Home, 96, 377);// home button
     this.homeBtn.addEventListener("click", this.homeBtnClick.bind(this));
     this.homeBtn.hidden = true;
+    
+    this.#soundEffects = new TSoundEffects;
 
 }
 
@@ -63,6 +69,11 @@ playBtnClick(){
     this.#displayScore = 0; 
     this.#playBtn.hidden = true;  
     this.#scoreSprite.visible = true; 
+
+    this.#soundEffects.soundPlaying();
+
+    // this.sfPlaying = new TSoundFile(sfPlaying); 
+    // this.sfPlaying.play();
 }
 
 resumeBtnClick(){
@@ -78,6 +89,8 @@ GameOver(){
     this.#gameOverScore.value = this.#displayScore;
     this.#retryBtn.hidden = false;
     this.homeBtn.hidden = false;
+    this.#soundEffects.soundPlayingStop();
+   
 }
 retryBtnClick(){
 console.log("retry game");

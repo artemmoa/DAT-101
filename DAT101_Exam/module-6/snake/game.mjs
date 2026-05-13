@@ -15,7 +15,7 @@ import { TMenuSnake } from "./menu.js";
 //-----------------------------------------------------------------------------------------
 const cvs = document.getElementById("cvs");
 const spcvs = new TSpriteCanvas(cvs);
-let menuSnake = null; // variable for scores 
+let menuSnake = null; // variable for  menu
 export let gameSpeed = 4; // Game speed multiplier;
 let hndUpdateGame = null;
 let baitsCounter = 0; 
@@ -64,7 +64,7 @@ export function baitIsEaten() {
   menuSnake.incScore(30);  // counter increasment 
   console.log("Bait eaten!");
   GameProps.bait.update(); 
-  GameProps.snake.grow();
+  GameProps.snake.grow(); 
   /* Logic to increase the snake size and score when bait is eaten */
   increaseGameSpeed(); // Increase game speed
 
@@ -112,12 +112,12 @@ function updateGame() {
   switch (GameProps.gameStatus) {
     case EGameStatus.Playing:
     
-      if (!GameProps.snake.update()) {
+      if (!GameProps.snake.update()) {    
         GameProps.gameStatus = EGameStatus.GameOver;
         console.log("Game over!");
       }
       break;
-    case EGameStatus.GameOver:
+    case EGameStatus.GameOver:// game over screen calling
       menuSnake.GameOver(); 
   }
 }
@@ -150,10 +150,10 @@ function onKeyDown(event) {
     case "ArrowRight":
       GameProps.snake.setDirection(EDirection.Right);
       break;
+      // adding in pause button in key pressed listener for both  space and esc keys//
     case " ":
       console.log("Space key pressed!");
-      /* Pause the game logic here */
-    case "Escape":
+    case "Escape":                   
       //pause game code//
       console.log("esc pressed");
     if(GameProps.gameStatus === EGameStatus.Playing) {

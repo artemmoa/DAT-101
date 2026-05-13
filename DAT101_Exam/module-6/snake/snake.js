@@ -1,4 +1,4 @@
-"use strict";
+"use strict";   //sound line 76//
 //------------------------------------------------------------------------------------------
 //----------- Import modules, mjs files  ---------------------------------------------------
 //------------------------------------------------------------------------------------------
@@ -6,6 +6,7 @@ import { TSprite } from "libSprite";
 import { TPoint } from "lib2d";
 import { GameProps, SheetData, baitIsEaten, EGameStatus } from "./game.mjs"
 import { TBoardCell, EBoardCellInfoType } from "./gameBoard.js";
+import { TSoundEffects } from "./sound.js";   
 
 //------------------------------------------------------------------------------------------
 //----------- variables and object ---------------------------------------------------------
@@ -37,9 +38,11 @@ class TSnakePart extends TSprite {
 
 
 class TSnakeHead extends TSnakePart {
+  #soundEffects;  // adding sound effects inside the class 
   constructor(aSpriteCanvas, aBoardCell) {
     super(aSpriteCanvas, SheetData.Head, aBoardCell);
     this.newDirection = this.direction;
+    this.#soundEffects = new TSoundEffects;
   }
 
  setDirection(aDirection) {
@@ -69,7 +72,8 @@ class TSnakeHead extends TSnakePart {
     this.direction = this.newDirection;
     this.index = this.direction;
     if (this.checkCollision()) {
-      GameProps.gameStatus = EGameStatus.GameOver;
+      GameProps.gameStatus = EGameStatus.GameOver;  
+      this.#soundEffects.soundGameOver(); // play game over sound
       return false; // Collision detected, do not continue
     }
     // Update the position of the snake element (subclass)
@@ -77,6 +81,7 @@ class TSnakeHead extends TSnakePart {
     //Check if the snake head is on a bait cell
     const boardCellInfo = GameProps.gameBoard.getCell(this.boardCell.row, this.boardCell.col);
     if(boardCellInfo.infoType === EBoardCellInfoType.Bait) {
+      this.#soundEffects.soundBait();
       baitIsEaten();
 
     }else{
@@ -197,6 +202,12 @@ class TSnakeTail extends TSnakePart {
   
 
   update(){
+  
+    const spawnTailRow = this.boardCell.row;
+    const spawnTailCol = this.boardCell.col;
+    GameProps.gameBoard.getCell(spawnTailRow, spawnTailCol).infoType =
+      EBoardCellInfoType.Empty; //deleting tail from spawn cells
+
     switch (this.direction) {
       case EDirection.Up:
         this.boardCell.row--;
@@ -266,12 +277,11 @@ if(this.#newBodyPart){
 }else{
   this.#tail.update();
 }
-
 return true; // No collision, continue
   }//end of update
 
   grow(){
-    this.#newBodyPart = this.#body[this.#body.length - 1].clone();
+    this.#newBodyPart = this.#body[this.#body.length - 1].clone(); // for snake growth
   }
 
   setDirection(aDirection) {
